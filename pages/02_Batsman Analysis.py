@@ -8,7 +8,7 @@ st.set_page_config(page_title="Batsman Analysis")
 
 balls = pd.read_csv("datasets/IPL_Ball_by_Ball_2008_2022 (3).csv")
 matches = pd.read_csv("datasets/IPL_Matches_2008_2022 (1).csv")
-#name changes
+# name changes
 changed_name = {
     'Delhi Daredevils': 'Delhi Capitals',
     'Kings XI Punjab': 'Punjab Kings',
@@ -17,7 +17,7 @@ changed_name = {
 matches.replace(changed_name.keys(), changed_name.values(), inplace=True)
 balls.replace(changed_name.keys(), changed_name.values(), inplace=True)
 
-#masked and merged dataset
+# masked and merged dataset
 seasondf = balls.merge(matches[["ID", "Season"]], on="ID", how="left")
 seasondf["is_bowler_wicket"] = seasondf["kind"].apply(
     lambda x: 1 if x in ['caught', 'caught and bowled', 'bowled', 'stumped',
@@ -29,10 +29,10 @@ seasondf["is_fare_del"] = seasondf["extra_type"].apply(lambda x: 0 if x in ['wid
 select_batter = st.selectbox("Select Batsman", sorted(balls["batter"].unique()))
 st.title("Batsman Analysis")
 def batsman_analysis(select_batter):
-    #player statistics
+    # player statistics
     st.subheader(select_batter)
 
-    #player df
+    # player df
     batterdf = seasondf.copy()
     batterdf["isBatsmanBall"] = batterdf["extra_type"].apply(lambda x: 1 if x != "wides" else 0)
     bdf = batterdf[batterdf["batter"] == select_batter].copy()
@@ -67,7 +67,7 @@ def batsman_analysis(select_batter):
     df = df.drop(columns=["batsman_run", "isBatsmanBall", "isBatterOut", "isSix", "isFour", "is50", "is100"])
     st.dataframe(df)
 
-    #top stat
+    # top stat
     col1, col2, col3 = st.columns(3)
     col4, col5, col6 = st.columns(3)
     col7, col8, col9 = st.columns(3)
